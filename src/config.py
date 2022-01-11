@@ -14,6 +14,7 @@ class CFG:
     learning_rate = 1e-4
     min_lr = 1e-6
     weight_decay = 1e-6
+    patience=5
     num_method_classes=3
     num_letter_classes=46
 
