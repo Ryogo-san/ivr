@@ -2,8 +2,8 @@ class CFG:
     debug = False
     MODEL_DIR = "../models/"
     OUTPUT_DIR = "../"
-    num_workers = 10
-    size = 224
+    num_workers = 4
+    image_size = 256
     seed = 1234
     model_name = "resnet50d"
     batch_size = 8

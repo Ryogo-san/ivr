@@ -1,3 +1,4 @@
+import os
 import torch
 from torch.optim import Adam
 from torch.optim.lr_scheduler import CosineAnnealingLR
@@ -30,3 +31,12 @@ def get_scheduler(optimizer, cfg):
         scheduler = CosineAnnealingLR(optimizer, T_max=cfg.T_max, eta_min=cfg.min_lr, last_epoch=-1)
 
     return scheduler
+
+
+def get_image_path_list():
+    train_list=[]
+    for dirname,_,filenames in os.walk("../data/dataset"):
+        for filename in filenames:
+            train_list.append(os.path.join(dirname,filename))
+
+    return train_list
