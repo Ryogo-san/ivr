@@ -164,3 +164,4 @@ data/dataset
 data/original_input
 data/tmp
 *.ipynb
+src/lightning_logs

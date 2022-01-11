@@ -1,6 +1,7 @@
 import os
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch.optim import Adam
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
@@ -35,7 +36,9 @@ def get_scheduler(optimizer, cfg):
 
 def get_loss(yhat,y,cfg):
     if cfg.loss=="BCE":
-        return nn.BCEWithLogitsLoss(yhat,y)
+        #return nn.BCEWithLogitsLoss(yhat,y)
+        #return nn.BCELoss(yhat,y)
+        return F.cross_entropy(yhat,y)
 
 
 def get_image_path_list():

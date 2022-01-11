@@ -21,7 +21,9 @@ class RecognitionModel(LightningModule):
         if self.cfg.model_name in self.cfg.fc_models:
             self.n_features = self.model.fc.in_features
             self.model.fc = nn.Identity()
-            self.fc = nn.Linear(self.n_features, self.cfg.target_size)
+            self.fc1 = nn.Linear(self.n_features, self.cfg.num_method_classes)
+            self.fc2 = nn.Linear(self.n_features, self.cfg.num_letter_classes)
+            self.softmax=nn.Softmax()
 
     def get_feature(self, image):
         feature = self.model(image)
@@ -29,25 +31,26 @@ class RecognitionModel(LightningModule):
 
     def forward(self, image):
         feature = self.get_feature(image)
-        output = self.fc(feature)
-        return output
+        out_method = self.softmax(self.fc1(feature))
+        out_letter = self.softmax(self.fc2(feature))
+        return out_method,out_letter
 
     def training_step(self, batch, batch_idx):
         x, y = batch
-        y_hat = self(x)
-        y=y.long()
-        y_hat=y_hat.long()
-        loss = get_loss(y_hat, y,self.cfg)
+        out_method,out_letter = self(x)
+        loss = get_loss(out_method, y[:,0],self.cfg)+get_loss(out_letter,y[:,1],self.cfg)
         return loss
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
-        y_hat = self(x)
-        y=y.long()
-        y_hat=y_hat.long()
-        loss = get_loss(y_hat, y,self.cfg)
-        preds = torch.argmax(loss, dim=1)  #
-        self.accuracy(preds, y)  #
+        out_method,out_letter = self(x)
+        loss1 = get_loss(out_method, y[:,0],self.cfg)
+        loss2=get_loss(out_letter,y[:,1],self.cfg)
+        loss=loss1+loss2
+        preds_method = torch.argmax(out_method, dim=1)  #
+        preds_letter=torch.argmax(out_letter,dim=1)
+        self.accuracy(preds_method, y[:,0])  #
+        self.accuracy(preds_letter, y[:,1])  #
 
     def test_step(self, batch, batch_idx):
         return validation_step(self, batch, batch_idx)
