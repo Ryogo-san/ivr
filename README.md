@@ -20,4 +20,4 @@ poetry run pre-commit install
 
 でpre-commitを利用できるようにすると、commitで失敗する
 
-あと、マルチラベル学習の理解が甘い。ロスとかの定義しっかり。
+GPUでの学習とcallback
