@@ -1,6 +1,6 @@
 import pytorch_lightning as pl
 import torch
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader,random_split
 from pytorch_lightning import LightningDataModule
 
 import dataset
@@ -14,15 +14,17 @@ from config import CFG
 class MyDataModule(LightningDataModule):
     def __init__(self, img_path_list, cfg):
         super().__init__()
-        self.train_list=img_path_list # 
-        self.val_df = img_path_list # 
+        num_of_img_path=len(img_path_list)
+        train_size=int(0.9*num_of_img_path)
+        val_size=num_of_img_path-train_size
+        self.train_list,self.val_list=random_split(img_path_list,[train_size,val_size])
         self.cfg = cfg
 
     def __create_dataset(self, train=True):
         if train:
             return MyDataset(self.train_list, self.cfg.image_size,train)
         else:
-            return MyDataset(self.val_df, self.cfg.image_size,train)
+            return MyDataset(self.val_list, self.cfg.image_size,train)
 
     def train_dataloader(self):
         dataset = self.__create_dataset(True)
