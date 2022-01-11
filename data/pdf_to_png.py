@@ -42,11 +42,4 @@ def pdf_to_image(pdf_list):
 
 
 if __name__=="__main__":
-        file_name = pdf_file[:-4]
-        images = pdf2image.convert_from_path(pdf_file)
-        for idx, image in enumerate(images):
-            image.save(file_name + f"{idx+1}" + ".png", "png")
-
-
-if __name__ == "__main__":
     pdf_to_image(get_pdf_list("./original_input"))

@@ -12,10 +12,10 @@ You can build the environment using poetry below:
 poetry install
 ```
 
-## ToDo
+## To Do
 
 ```bash
 poetry run pre-commit install
 ```
 
-でpre-commitを利用できるようにすると、pushの際に`Everything-up-to-date`と出てpushできなくなるので調査する
+でpre-commitを利用できるようにすると、commitで失敗する
