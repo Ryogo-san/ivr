@@ -1,5 +1,5 @@
 class CFG:
-    debug = False
+    debug = True
     MODEL_DIR = "../models/"
     OUTPUT_DIR = "../"
     num_workers = 4
@@ -11,7 +11,7 @@ class CFG:
     optimizer = "Adam"
     scheduler = "CosineAnnealingLR"
     T_max = 3
-    lr = 1e-4
+    learning_rate = 1e-4
     min_lr = 1e-6
     weight_decay = 1e-6
     target_size = 2

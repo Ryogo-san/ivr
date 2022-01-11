@@ -35,13 +35,17 @@ class RecognitionModel(LightningModule):
     def training_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self(x)
-        loss = CFG.loss(y_hat, y)
+        y=y.long()
+        y_hat=y_hat.long()
+        loss = get_loss(y_hat, y,self.cfg)
         return loss
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
         y_hat = self(x)
-        loss = CFG.loss(y_hat, y)
+        y=y.long()
+        y_hat=y_hat.long()
+        loss = get_loss(y_hat, y,self.cfg)
         preds = torch.argmax(loss, dim=1)  #
         self.accuracy(preds, y)  #
 
@@ -49,8 +53,8 @@ class RecognitionModel(LightningModule):
         return validation_step(self, batch, batch_idx)
 
     def configure_optimizers(self):
-        optimizer = get_optimizer(self.cfg.optimizer)
-        scheduler = get_scheduler(optimizer)
+        optimizer = get_optimizer(self.cfg.optimizer,self.parameters(),self.cfg.learning_rate)
+        scheduler = get_scheduler(optimizer,self.cfg)
 
         return [optimizer], [scheduler]
 

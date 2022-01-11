@@ -1,5 +1,6 @@
 import os
 import torch
+import torch.nn as nn
 from torch.optim import Adam
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
@@ -31,6 +32,10 @@ def get_scheduler(optimizer, cfg):
         scheduler = CosineAnnealingLR(optimizer, T_max=cfg.T_max, eta_min=cfg.min_lr, last_epoch=-1)
 
     return scheduler
+
+def get_loss(yhat,y,cfg):
+    if cfg.loss=="BCE":
+        return nn.BCEWithLogitsLoss(yhat,y)
 
 
 def get_image_path_list():
