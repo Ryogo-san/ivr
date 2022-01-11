@@ -22,14 +22,12 @@ class MyDataModule(LightningDataModule):
 
     def __create_dataset(self, train=True):
         if train:
-            return MyDataset(self.train_list, self.cfg.image_size,train)
+            return MyDataset(self.train_list, self.cfg.image_size)
         else:
-            return MyDataset(self.val_list, self.cfg.image_size,train)
+            return MyDataset(self.val_list, self.cfg.image_size)
 
     def train_dataloader(self):
         dataset = self.__create_dataset(True)
-        #index=0
-        #print(dataset.__getitem__(index)[1])
         return DataLoader(dataset, self.cfg.batch_size, shuffle=True, num_workers=self.cfg.num_workers)
 
     def val_dataloader(self):
