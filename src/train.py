@@ -30,15 +30,15 @@ def main(img_list, cfg):
 
     my_callback=MyCallback()
 
-    checkpoint_callback=ModelCheckpoint(
-            dirpath="../model",
-            filename="best_model"
-    )
+    #checkpoint_callback=ModelCheckpoint(
+    #        dirpath="../model",
+    #        filename="best_model"
+    # )
 
     trainer=pl.Trainer(
             max_epochs=CFG.epochs,
             gpus=CFG.gpus,
-            callbacks=[my_callback,early_stop_callback,checkpoint_callback]
+            callbacks=[my_callback,early_stop_callback]
     )
 
     trainer.fit(model,data)

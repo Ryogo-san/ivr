@@ -30,3 +30,5 @@ poetry run pre-commit install
 ```
 
 でpre-commitを利用できるようにすると、commitで失敗する
+
+log関係も
