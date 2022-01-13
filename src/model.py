@@ -23,7 +23,7 @@ class RecognitionModel(LightningModule):
             self.model.fc = nn.Identity()
             self.fc1 = nn.Linear(self.n_features, self.cfg.num_method_classes)
             self.fc2 = nn.Linear(self.n_features, self.cfg.num_letter_classes)
-            self.softmax=nn.Softmax()
+            self.softmax = nn.Softmax()
 
     def get_feature(self, image):
         feature = self.model(image)
@@ -33,34 +33,38 @@ class RecognitionModel(LightningModule):
         feature = self.get_feature(image)
         out_method = self.softmax(self.fc1(feature))
         out_letter = self.softmax(self.fc2(feature))
-        return out_method,out_letter
+        return out_method, out_letter
 
     def training_step(self, batch, batch_idx):
         x, y = batch
-        out_method,out_letter = self(x)
-        loss = get_loss(out_method, y[:,0],self.cfg)+get_loss(out_letter,y[:,1],self.cfg)
+        out_method, out_letter = self(x)
+        loss = get_loss(out_method, y[:, 0], self.cfg) + get_loss(
+            out_letter, y[:, 1], self.cfg
+        )
         return loss
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
-        out_method,out_letter = self(x)
-        loss1 = get_loss(out_method, y[:,0],self.cfg)
-        loss2=get_loss(out_letter,y[:,1],self.cfg)
-        loss=loss1+loss2
+        out_method, out_letter = self(x)
+        loss1 = get_loss(out_method, y[:, 0], self.cfg)
+        loss2 = get_loss(out_letter, y[:, 1], self.cfg)
+        loss = loss1 + loss2
         preds_method = torch.argmax(out_method, dim=1)  #
-        preds_letter=torch.argmax(out_letter,dim=1)
-        method_acc=self.accuracy(preds_method, y[:,0])  #
-        letter_acc=self.accuracy(preds_letter, y[:,1])  #
-        self.log("val_loss",loss)
-        self.log("method_acc",method_acc)
-        self.log("letter_acc",letter_acc)
+        preds_letter = torch.argmax(out_letter, dim=1)
+        method_acc = self.accuracy(preds_method, y[:, 0])  #
+        letter_acc = self.accuracy(preds_letter, y[:, 1])  #
+        self.log("val_loss", loss)
+        self.log("method_acc", method_acc)
+        self.log("letter_acc", letter_acc)
 
     def test_step(self, batch, batch_idx):
         return self.validation_step(batch, batch_idx)
 
     def configure_optimizers(self):
-        optimizer = get_optimizer(self.cfg.optimizer,self.parameters(),self.cfg.learning_rate)
-        scheduler = get_scheduler(optimizer,self.cfg)
+        optimizer = get_optimizer(
+            self.cfg.optimizer, self.parameters(), self.cfg.learning_rate
+        )
+        scheduler = get_scheduler(optimizer, self.cfg)
 
         return [optimizer], [scheduler]
 
