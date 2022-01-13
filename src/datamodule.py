@@ -34,11 +34,14 @@ class MyDataModule(LightningDataModule):
         dataset = self.__create_dataset(False)
         return DataLoader(dataset, self.cfg.batch_size, shuffle=False, num_workers=self.cfg.num_workers)
 
+    def test_dataloader(self):
+        return self.val_dataloader()
+
 
 if __name__=="__main__":
     img_list=get_image_path_list(CFG.data_dir)
     module=MyDataModule(img_list,CFG)
-    loader=module.train_dataloader()
+    loader=module.test_dataloader()
     batch_iterator=iter(loader)
     inputs,labels=next(batch_iterator)
     print(inputs.size())

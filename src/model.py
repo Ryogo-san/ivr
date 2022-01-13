@@ -56,7 +56,7 @@ class RecognitionModel(LightningModule):
         self.log("letter_acc",letter_acc)
 
     def test_step(self, batch, batch_idx):
-        return validation_step(self, batch, batch_idx)
+        return self.validation_step(batch, batch_idx)
 
     def configure_optimizers(self):
         optimizer = get_optimizer(self.cfg.optimizer,self.parameters(),self.cfg.learning_rate)
