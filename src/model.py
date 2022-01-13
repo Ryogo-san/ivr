@@ -49,9 +49,11 @@ class RecognitionModel(LightningModule):
         loss=loss1+loss2
         preds_method = torch.argmax(out_method, dim=1)  #
         preds_letter=torch.argmax(out_letter,dim=1)
-        self.accuracy(preds_method, y[:,0])  #
-        self.accuracy(preds_letter, y[:,1])  #
+        method_acc=self.accuracy(preds_method, y[:,0])  #
+        letter_acc=self.accuracy(preds_letter, y[:,1])  #
         self.log("val_loss",loss)
+        self.log("method_acc",method_acc)
+        self.log("letter_acc",letter_acc)
 
     def test_step(self, batch, batch_idx):
         return validation_step(self, batch, batch_idx)
