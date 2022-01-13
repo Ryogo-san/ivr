@@ -45,5 +45,5 @@ def main(img_list, cfg):
 
 
 if __name__=="__main__":
-    img_list=get_image_path_list()
+    img_list=get_image_path_list(CFG.data_dir)
     main(img_list,CFG)

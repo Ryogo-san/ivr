@@ -36,7 +36,7 @@ class MyDataModule(LightningDataModule):
 
 
 if __name__=="__main__":
-    img_list=get_image_path_list()
+    img_list=get_image_path_list(CFG.data_dir)
     module=MyDataModule(img_list,CFG)
     loader=module.train_dataloader()
     batch_iterator=iter(loader)

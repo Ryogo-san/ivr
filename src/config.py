@@ -4,6 +4,7 @@ class CFG:
     gpus=0
     MODEL_DIR = "../models/"
     OUTPUT_DIR = "../"
+    data_dir="./data/dataset/"
     num_workers = 4
     image_size = 256
     seed = 1234

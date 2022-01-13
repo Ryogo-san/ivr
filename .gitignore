@@ -166,3 +166,4 @@ data/tmp
 model
 *.ipynb
 src/lightning_logs
+lightning_logs

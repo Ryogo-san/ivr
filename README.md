@@ -14,14 +14,13 @@ bash setup.sh
 
 ## Run
 
-just run `train.py`
+just run `src/train.py`
 
 ```bash
-cd src
-poetry run python3 train.py
+poetry run python3 src/train.py
 ```
 
-You can set some hyper-parameters by changing `config.py`
+You can set some hyper-parameters by changing `src/config.py`
 
 ## To Do
 

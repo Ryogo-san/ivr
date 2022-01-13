@@ -9,7 +9,8 @@ from torchvision import transforms
 
 import utils
 from utils import *
-
+import config
+from config import CFG
 
 class MyDataset(Dataset):
     """dataset"""
@@ -38,7 +39,7 @@ class MyDataset(Dataset):
 
 
 if __name__=="__main__":
-    train_list=get_image_path_list()
+    train_list=get_image_path_list(CFG.data_dir)
     train_dataset=MyDataset(train_list,image_size=256)
     index=0
     print(train_dataset.__getitem__(index)[0].size())

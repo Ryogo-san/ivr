@@ -41,9 +41,9 @@ def get_loss(yhat,y,cfg):
         return F.cross_entropy(yhat,y)
 
 
-def get_image_path_list():
+def get_image_path_list(data_dir):
     train_list=[]
-    for dirname,_,filenames in os.walk("../data/dataset"):
+    for dirname,_,filenames in os.walk(data_dir):
         for filename in filenames:
             train_list.append(os.path.join(dirname,filename))
 
