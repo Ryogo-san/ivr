@@ -4,8 +4,8 @@ set -ue
 poetry update
 
 # gpu configuration
-source lib/utilfuncs.sh
-source lib/gpu_confirm.sh
+source shell_lib/utilfuncs.sh
+source shell_lib/gpu_confirm.sh
 
 result=`gpu_confirm`
 

@@ -163,5 +163,6 @@ docs
 data/dataset
 data/original_input
 data/tmp
+model
 *.ipynb
 src/lightning_logs

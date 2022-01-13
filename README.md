@@ -12,6 +12,17 @@ You can build the environment using poetry below:
 bash setup.sh
 ```
 
+## Run
+
+just run `train.py`
+
+```bash
+cd src
+poetry run python3 train.py
+```
+
+You can set some hyper-parameters by changing `config.py`
+
 ## To Do
 
 ```bash
