@@ -37,7 +37,7 @@ def main(img_list, cfg):
 
     trainer=pl.Trainer(
             max_epochs=CFG.epochs,
-            gpus=1,
+            gpus=CFG.gpus,
             callbacks=[my_callback,early_stop_callback,checkpoint_callback]
     )
 

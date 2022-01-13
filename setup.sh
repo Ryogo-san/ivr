@@ -1,6 +1,4 @@
-set -ue
-
-#poetry install
+poetry install
 poetry update
 
 # gpu configuration
@@ -11,7 +9,8 @@ result=`gpu_confirm`
 
 if [ $result == ""]; then
     print_notice "It seems that you have NO gpus in your machine."
-    poetry add torch torchvision pytorch-lightning timm
+    poetry add torch torchvision
+    poetry run poe add-depend-torch
 else
     print_notice "It seems that you have gpus in your machine!"
     poetry run poe force-cuda11

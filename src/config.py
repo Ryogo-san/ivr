@@ -1,5 +1,7 @@
 class CFG:
     debug = True
+    epochs=300
+    gpus=1
     MODEL_DIR = "../models/"
     OUTPUT_DIR = "../"
     num_workers = 4
