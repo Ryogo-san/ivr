@@ -3,6 +3,7 @@ import warnings
 warnings.filterwarnings("ignore")
 import numpy as np
 import pytorch_lightning as pl
+from  pytorch_lightning.utilities.seed import seed_everything
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks import ModelCheckpoint
 import torch
@@ -20,6 +21,8 @@ from utils import *
 
 
 def main(img_list, cfg):
+    seed_everything(seed=CFG.seed)
+
     model=RecognitionModel(cfg)
     data=MyDataModule(img_list,cfg)
 
@@ -35,10 +38,13 @@ def main(img_list, cfg):
     #        filename="best_model"
     # )
 
+    bar=MyProgressBar(refresh_rate=5,process_position=1)
+
     trainer=pl.Trainer(
             max_epochs=CFG.epochs,
             gpus=CFG.gpus,
-            callbacks=[my_callback,early_stop_callback]
+            callbacks=[my_callback,early_stop_callback,bar],
+            deterministic=True
     )
 
     trainer.fit(model,data)

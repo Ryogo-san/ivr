@@ -3,6 +3,7 @@ import warnings
 warnings.filterwarnings("ignore")
 import numpy as np
 import pytorch_lightning as pl
+from pytorch_lightning.utilities.seed import seed_everything
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks import ModelCheckpoint
 import torch
@@ -20,14 +21,16 @@ from utils import *
 
 
 def main(img_list, cfg):
+    seed_everything(cfg.seed)
+
     model=RecognitionModel(cfg)
     data=MyDataModule(img_list,cfg)
 
 
-    ckpt_path="./lightning_logs/version_29/checkpoints/epoch=14-step=4199.ckpt"
+    ckpt_path=CFG.ckpt_path
     state_dict=torch.load(ckpt_path)
     model=model.load_from_checkpoint(checkpoint_path=ckpt_path,cfg=CFG)
-    trainer=pl.Trainer()
+    trainer=pl.Trainer(deterministic=True)
     trainer.test(model,data)
 
 if __name__=="__main__":

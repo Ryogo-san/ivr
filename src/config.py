@@ -5,6 +5,7 @@ class CFG:
     MODEL_DIR = "../models/"
     OUTPUT_DIR = "../"
     data_dir="./data/dataset/"
+    ckpt_path="./lightning_logs/version_29/checkpoints/epoch=14-step=4199.ckpt"
     num_workers = 4
     image_size = 256
     seed = 1234
