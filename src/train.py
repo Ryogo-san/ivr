@@ -4,6 +4,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+from pytorch_lightning.callbacks import ModelCheckpoint
 import torch
 
 import datamodule
@@ -29,11 +30,15 @@ def main(img_list, cfg):
 
     my_callback=MyCallback()
 
+    checkpoint_callback=ModelCheckpoint(
+            dirpath="../model",
+            filename="best_model"
+    )
 
     trainer=pl.Trainer(
             max_epochs=300,
-            gpus=1
-            callbacks=[my_callback,early_stop_callback]
+            gpus=1,
+            callbacks=[my_callback,early_stop_callback,checkpoint_callback]
     )
 
     trainer.fit(model,data)

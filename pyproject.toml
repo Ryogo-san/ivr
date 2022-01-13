@@ -5,16 +5,21 @@ description = ""
 authors = ["Ryogo-san <ritosetsugekka0226@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-torch = "^1.10.1"
+python = ">=3.8,<3.10"
 numpy = "^1.22.0"
 opencv-python = "^4.5.5"
-pytorch-lightning = "^1.5.8"
-torchvision = "^0.11.2"
 Sphinx = {version = "^4.3.2", optional = true, extras = ["docs"]}
-timm = "^0.4.12"
 pdf2image = "^1.16.0"
 matplotlib = "^3.5.1"
+poethepoet = "^0.12.0"
+torch = "^1.10.1"
+torchvision = "^0.11.2"
+pytorch-lightning = "^1.5.8"
+timm = "^0.4.12"
+
+[tool.poe.tasks]
+force-cuda11="poetry run python3 -m pip  install torch==1.10.1+cu111 torchvision==0.11.2+cu111 -f https://download.pytorch.org/whl/torch_stable.html"
+add-depend-torch="poetry run python3 -m pip install setuptools==59.5.0 timm pytorch-lightning==1.4.0 torchmetrics"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
