@@ -26,6 +26,7 @@ class MyDataset(Dataset):
     def __getitem__(self, idx):
         img_path = self.file_list[idx]
         img = cv2.imread(img_path)
+        img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
         img_transformed = self.transform(img)  #
         img_path_list = img_path.split("/")  # ./enpitu/U3042/U3042_00000.png -> enpitu, U3042
         label_method = img_path_list[3]  # enpitu

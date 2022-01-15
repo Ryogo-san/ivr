@@ -17,6 +17,7 @@ class RecognitionModel(LightningModule):
         self.cfg = cfg
         self.accuracy = Accuracy()
         self.model = timm.create_model(self.cfg.model_name, pretrained=pretrained)
+        self.input_conv=nn.Conv2d(1,3,kernel_size=1)
 
         if self.cfg.model_name in self.cfg.fc_models:
             self.n_features = self.model.fc.in_features
@@ -30,7 +31,8 @@ class RecognitionModel(LightningModule):
         return feature
 
     def forward(self, image):
-        feature = self.get_feature(image)
+        x=self.input_conv(image)
+        feature = self.get_feature(x)
         out_method = self.softmax(self.fc1(feature))
         out_letter = self.softmax(self.fc2(feature))
         return out_method, out_letter
@@ -38,9 +40,7 @@ class RecognitionModel(LightningModule):
     def training_step(self, batch, batch_idx):
         x, y = batch
         out_method, out_letter = self(x)
-        loss = get_loss(out_method, y[:, 0], self.cfg) + get_loss(
-            out_letter, y[:, 1], self.cfg
-        )
+        loss = self.cfg.alpha * get_loss(out_method, y[:, 0], self.cfg) + (1 - self.cfg.alpha) * get_loss(out_letter, y[:, 1], self.cfg)
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -48,7 +48,7 @@ class RecognitionModel(LightningModule):
         out_method, out_letter = self(x)
         loss1 = get_loss(out_method, y[:, 0], self.cfg)
         loss2 = get_loss(out_letter, y[:, 1], self.cfg)
-        loss = loss1 + loss2
+        loss = self.cfg.alpha * loss1 + (1 - self.cfg.alpha) * loss2
         preds_method = torch.argmax(out_method, dim=1)  #
         preds_letter = torch.argmax(out_letter, dim=1)
         method_acc = self.accuracy(preds_method, y[:, 0])  #

@@ -6,6 +6,7 @@ import pytorch_lightning as pl
 from pytorch_lightning.utilities.seed import seed_everything
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.loggers import TensorBoardLogger
 import torch
 
 import datamodule
@@ -40,11 +41,17 @@ def main(img_list, cfg):
 
     bar = MyProgressBar(refresh_rate=5, process_position=1)
 
+    logger = TensorBoardLogger(
+            save_dir=os.getcwd(),
+            name="logs"
+    )
+
     trainer = pl.Trainer(
         max_epochs=CFG.epochs,
         gpus=CFG.gpus,
         callbacks=[my_callback, early_stop_callback, bar],
         deterministic=True,
+        logger=logger,
     )
 
     trainer.fit(model, data)

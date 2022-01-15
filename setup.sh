@@ -7,7 +7,7 @@ source shell_lib/gpu_confirm.sh
 
 result=`gpu_confirm`
 
-if [ $result == ""]; then
+if [ $result == "" ]; then
     print_notice "It seems that you have NO gpus in your machine."
     poetry add torch torchvision
     poetry run poe add-depend-torch
