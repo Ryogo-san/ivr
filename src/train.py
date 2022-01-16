@@ -22,7 +22,7 @@ from utils import *
 
 
 def main(img_list, cfg):
-    seed_everything(seed=CFG.seed)
+    seed_everything(seed=cfg.seed)
 
     model = RecognitionModel(cfg)
     data = MyDataModule(img_list, cfg)

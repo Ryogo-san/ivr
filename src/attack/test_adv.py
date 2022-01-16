@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__),"../"))
 
+from pytorch_lightning.utilities.seed import seed_everything
+
 import model
 from model import *
 import config
@@ -23,6 +25,7 @@ from utils import *
 
 
 def main(img_list,cfg,device):
+    seed_everything(seed=cfg.seed)
     model=RecognitionModel(cfg)
     module=MyDataModule(img_list,cfg)
 
@@ -62,7 +65,9 @@ def main(img_list,cfg,device):
         plt.axis("off")
         plt.savefig(f"./adversarials/input_{figname_tag}.png")
         plt.clf()
-        print("image saved")
+        print(f"pred_pen: {pre_method[0]}, answer_pen: {labels[0,0]}")
+        print(f"pred_letter: {pre_letter[0]}, answer_letter: {labels[0,1]}")
+        print("images saved\n")
         total+=CFG.batch_size
 
     print("Accuracy of method: %.2f%%"%(100*float(correct_method)/total))
