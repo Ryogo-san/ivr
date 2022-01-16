@@ -20,6 +20,8 @@ import datamodule
 from datamodule import MyDataModule
 import fgsm
 from fgsm import FGSM
+import pgd
+from pgd import PGD
 import utils
 from utils import *
 
@@ -35,7 +37,8 @@ def main(img_list,cfg,device):
     
     model=model.eval()
 
-    attack=FGSM(model,device,cfg)
+    #attack=FGSM(model,device,cfg)
+    attack=PGD(model,device,cfg)
 
     correct_method=0
     correct_letter=0
