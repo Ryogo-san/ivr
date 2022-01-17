@@ -30,8 +30,10 @@ You can also set some hyper-parameters by changing `src/config.py`
 
 ## Adversarial Attack
 
+set the attack method by the argument `--attack`
+
 ```bash
-poetry run python3 src/attack/test_adv.py
+poetry run python3 src/attack/test_adv.py --attack FGSM
 ```
 
 ## To Do
@@ -41,5 +43,3 @@ poetry run pre-commit install
 ```
 
 でpre-commitを利用できるようにすると、commitで失敗する
-
-log関係も

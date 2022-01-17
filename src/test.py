@@ -28,7 +28,7 @@ def main(img_list, cfg):
     data = MyDataModule(img_list, cfg)
 
     ckpt_path = CFG.ckpt_path
-    state_dict = torch.load(ckpt_path,map_location=torch.device("cpu"))
+    state_dict = torch.load(ckpt_path)
     model = model.load_from_checkpoint(checkpoint_path=ckpt_path, cfg=cfg)
     trainer = pl.Trainer(deterministic=True)
     trainer.test(model, data)

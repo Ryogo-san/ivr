@@ -22,7 +22,7 @@ from utils import *
 
 
 def main(img_list, cfg):
-    seed_everything(seed=cfg.seed)
+    seed_everything(seed=CFG.seed)
 
     model = RecognitionModel(cfg)
     data = MyDataModule(img_list, cfg)
@@ -34,24 +34,24 @@ def main(img_list, cfg):
 
     my_callback = MyCallback()
 
-    # checkpoint_callback=ModelCheckpoint(
-    #        dirpath="../model",
-    #        filename="best_model"
-    # )
+    checkpoint_callback=ModelCheckpoint(
+            dirpath=cfg.model_dir,
+            filename="best_model"
+    )
 
     bar = MyProgressBar(refresh_rate=5, process_position=1)
 
     logger = TensorBoardLogger(
-            save_dir=os.getcwd(),
+            save_dir=cfg.output_dir,
             name="logs"
     )
 
     trainer = pl.Trainer(
         max_epochs=CFG.epochs,
         gpus=CFG.gpus,
-        callbacks=[my_callback, early_stop_callback, bar],
+        callbacks=[my_callback, early_stop_callback, bar,checkpoint_callback],
         deterministic=True,
-        logger=logger,
+        logger=logger
     )
 
     trainer.fit(model, data)
