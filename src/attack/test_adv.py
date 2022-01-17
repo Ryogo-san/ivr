@@ -9,6 +9,7 @@ import torch.optim as optim
 import matplotlib.pyplot as plt
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__),"../"))
+import argparse
 
 from pytorch_lightning.utilities.seed import seed_everything
 
@@ -22,11 +23,13 @@ import fgsm
 from fgsm import FGSM
 import pgd
 from pgd import PGD
+import attack_dispatcher
+from attack_dispatcher import attack_dispatcher
 import utils
 from utils import *
 
 
-def main(img_list,cfg,device):
+def main(img_list,cfg,device,attack_name):
     seed_everything(seed=cfg.seed)
     model=RecognitionModel(cfg)
     module=MyDataModule(img_list,cfg)
@@ -36,9 +39,14 @@ def main(img_list,cfg,device):
     model=model.load_from_checkpoint(checkpoint_path=ckpt_path,cfg=cfg)
     
     model=model.eval()
+    
+    attack_input={
+            "model":model,
+            "device":device,
+            "cfg":cfg
+    }
 
-    #attack=FGSM(model,device,cfg)
-    attack=PGD(model,device,cfg)
+    attack=attack_dispatcher(attack_name,**attack_input)
 
     correct_method=0
     correct_letter=0
@@ -78,6 +86,10 @@ def main(img_list,cfg,device):
 
 
 if __name__=="__main__":
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--attack",default="FGSM")
+    args=parser.parse_args()
+
     img_list = get_image_path_list(CFG.data_dir)
     device="cuda:0" if torch.cuda.is_available() else "cpu"
-    main(img_list,CFG,device)
+    main(img_list,CFG,device,args.attack)
