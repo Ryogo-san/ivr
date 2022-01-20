@@ -1,6 +1,5 @@
 import torch
 
-
 class Attack(object):
     r"""
     Base class for all attacks.
@@ -9,7 +8,6 @@ class Attack(object):
         It temporarily changes the original model's `training mode` to `test`
         by `.eval()` only during an attack process.
     """
-
     def __init__(self, model):
         r"""
         Initializes internal Attack state.
@@ -28,7 +26,7 @@ class Attack(object):
         Should be overridden by all subclasses.
         """
         raise NotImplementedError
-
-    def __call__(self, *input, **kwargs):
-        images = self.forward(*input, **kwargs)
+    
+    def __call__(self,*input,**kwargs):
+        images=self.forward(*input,**kwargs)
         return images

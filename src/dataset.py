@@ -28,9 +28,9 @@ class MyDataset(Dataset):
         img = cv2.imread(img_path)
         img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
         img_transformed = self.transform(img)  #
-        img_path_list = img_path.split("/")  # ./enpitu/U3042/U3042_00000.png -> enpitu, U3042
-        label_method = img_path_list[3]  # enpitu
-        label_letter = img_path_list[4]  # U3042
+        img_path_list = img_path.split("/")  # ./dataset_ryogo/enpitu/U3042/U3042_00000.png -> enpitu, U3042
+        label_method = img_path_list[4]  # enpitu
+        label_letter = img_path_list[5]  # U3042
 
         label_method = get_label_method_class(label_method)
         label_letter = unicode_to_hiragana_idx(label_letter)

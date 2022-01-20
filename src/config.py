@@ -5,14 +5,13 @@ class CFG:
     model_dir = "./logs/models/"
     output_dir = "./logs/"
     data_dir = "./data/dataset/"
-    #ckpt_path = "./lightning_logs/version_29/checkpoints/epoch=14-step=4199.ckpt"
-    #ckpt_path = "./lightning_logs/version_34/checkpoints/epoch=91-step=25759.ckpt"
-    ckpt_path = "./logs/models/best_model.ckpt"
+    ckpt_path = "./logs/models/resnet34d_best_model.ckpt"
+    #ckpt_path = "./logs/models/efficientnet_b0_best_model.ckpt"
     num_workers = 4
     image_size = 256
     seed = 1234
-    model_name = "resnet50d"
-    batch_size = 8
+    model_name = "resnet34d"
+    batch_size = 128
     loss = "CE"
     alpha=0.3 # balance of alpha*l1 + (1-alpha)*l2
     optimizer = "Adam"
@@ -24,6 +23,8 @@ class CFG:
     patience = 10
     num_method_classes = 3
     num_letter_classes = 46
+
+    classifier_models=["efficientnet_b0","efficientnet_b1", "densenet121d"]
 
     fc_models = ["resnet34", "resnet34d", "resnet50", "resnet50d"]
 

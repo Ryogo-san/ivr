@@ -19,12 +19,17 @@ class RecognitionModel(LightningModule):
         self.model = timm.create_model(self.cfg.model_name, pretrained=pretrained)
         self.input_conv=nn.Conv2d(1,3,kernel_size=1)
 
-        if self.cfg.model_name in self.cfg.fc_models:
+        if self.cfg.model_name in self.cfg.classifier_models:
+            self.n_features = self.model.classifier.in_features
+            self.model.classifier = nn.Identity()
+
+        elif self.cfg.model_name in self.cfg.fc_models:
             self.n_features = self.model.fc.in_features
             self.model.fc = nn.Identity()
-            self.fc1 = nn.Linear(self.n_features, self.cfg.num_method_classes)
-            self.fc2 = nn.Linear(self.n_features, self.cfg.num_letter_classes)
-            self.softmax = nn.Softmax()
+
+        self.fc1 = nn.Linear(self.n_features, self.cfg.num_method_classes)
+        self.fc2 = nn.Linear(self.n_features, self.cfg.num_letter_classes)
+        self.softmax = nn.Softmax()
 
     def get_feature(self, image):
         feature = self.model(image)
@@ -41,6 +46,7 @@ class RecognitionModel(LightningModule):
         x, y = batch
         out_method, out_letter = self(x)
         loss = self.cfg.alpha * get_loss(out_method, y[:, 0], self.cfg) + (1 - self.cfg.alpha) * get_loss(out_letter, y[:, 1], self.cfg)
+        self.log("train_loss",loss)
         return loss
 
     def validation_step(self, batch, batch_idx):

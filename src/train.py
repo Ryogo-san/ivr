@@ -36,14 +36,14 @@ def main(img_list, cfg):
 
     checkpoint_callback=ModelCheckpoint(
             dirpath=cfg.model_dir,
-            filename="best_model"
+            filename=f"{cfg.model_name}_best_model"
     )
 
     bar = MyProgressBar(refresh_rate=5, process_position=1)
 
     logger = TensorBoardLogger(
             save_dir=cfg.output_dir,
-            name="logs"
+            name=f"{cfg.model_name}_logs"
     )
 
     trainer = pl.Trainer(
