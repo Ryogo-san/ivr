@@ -45,7 +45,11 @@ class RecognitionModel(LightningModule):
     def training_step(self, batch, batch_idx):
         x, y = batch
         out_method, out_letter = self(x)
-        loss = self.cfg.alpha * get_loss(out_method, y[:, 0], self.cfg) + (1 - self.cfg.alpha) * get_loss(out_letter, y[:, 1], self.cfg)
+        loss1 = get_loss(out_method, y[:, 0], self.cfg)
+        loss2 = get_loss(out_letter, y[:, 1], self.cfg)
+        loss = self.cfg.alpha * loss1 + (1 - self.cfg.alpha) * loss2
+        if self.cfg.with_l1:
+            loss = loss+ self.cfg.lambda_l1*calculate_l1_loss(self.parameters())
         self.log("train_loss",loss)
         return loss
 
@@ -55,6 +59,8 @@ class RecognitionModel(LightningModule):
         loss1 = get_loss(out_method, y[:, 0], self.cfg)
         loss2 = get_loss(out_letter, y[:, 1], self.cfg)
         loss = self.cfg.alpha * loss1 + (1 - self.cfg.alpha) * loss2
+        if self.cfg.with_l1:
+            loss = loss+ self.cfg.lambda_l1*calculate_l1_loss(self.parameters())
         preds_method = torch.argmax(out_method, dim=1)  #
         preds_letter = torch.argmax(out_letter, dim=1)
         method_acc = self.accuracy(preds_method, y[:, 0])  #

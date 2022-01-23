@@ -19,7 +19,6 @@ def get_target_list(tmp_dir):
 
 def crop_letter(target_list, window_size,resized_size):
     for idx, target in enumerate(target_list):
-        print(target)
         img = cv2.imread(target)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         h, w = gray.shape
@@ -34,9 +33,8 @@ def crop_letter(target_list, window_size,resized_size):
             for x in range(w // window_size + 1):
                 crop = gray[y * window_size : (y + 1) * window_size, x * window_size : (x + 1) * window_size]
                 crop = np.where(crop < 210, crop, 255)
-
                 crop_h,crop_w=crop.shape
-                if crop_h==window_size and crop_w==window_size:
+                if crop_h==76 and crop_w==76:
                     resized_crop=cv2.resize(crop,(resized_size,resized_size),interpolation=cv2.INTER_CUBIC)
                     cv2.imwrite(os.path.join(out_dir, f"{hiragana_unicode}_{str(x).zfill(5)}.png"), resized_crop)
 

@@ -41,6 +41,11 @@ def get_loss(yhat, y, cfg):
     if cfg.loss == "CE":
         return F.cross_entropy(yhat, y)
 
+def calculate_l1_loss(parameters):
+    l1=torch.tensor(0.,requires_grad=True)
+    for w in parameters:
+        l1=l1+torch.norm(w,1)
+    return l1
 
 def get_image_path_list(data_dir):
     train_list = []

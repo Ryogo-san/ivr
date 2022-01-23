@@ -37,7 +37,10 @@ class MyDataModule(LightningDataModule):
     def val_dataloader(self):
         dataset = self.__create_dataset(False)
         return DataLoader(
-            dataset, self.cfg.batch_size, shuffle=False,  num_workers=self.cfg.num_workers,
+            dataset,
+            self.cfg.batch_size,
+            shuffle=False,
+            num_workers=self.cfg.num_workers,
         )
 
     def test_dataloader(self):
