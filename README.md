@@ -1,6 +1,6 @@
-# mmai
+# IVR
 
-The repository for the final assignment in MMAI class (Tokyo Institute of Technology).
+The repository for the final assignment in Image and Video Recognition class (Tokyo Institute of Technology).
 
 ## Requirements
 
@@ -35,11 +35,3 @@ set the attack method by the argument `--attack`
 ```bash
 poetry run python3 src/attack/test_adv.py --attack FGSM
 ```
-
-## To Do
-
-```bash
-poetry run pre-commit install
-```
-
-でpre-commitを利用できるようにすると、commitで失敗する
